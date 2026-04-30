@@ -18,7 +18,7 @@ public class HeaderContainer : BaseComponent
     private readonly Button ClearBasketButton = new(By.XPath("//button[@class='clear-cart']"));
     private readonly Button CloseBasketButton = new(By.XPath("//button[@class='close-cart']"));
     private readonly Simple Title = new(By.XPath("//h1[@class='shop-title']"));
-    private Button CheckoutButton = new(By.XPath("//button[@class='checkout-button']"));
+    private readonly Button CheckoutButton = new(By.XPath("//button[@class='checkout-button']"));
 
     /// <summary>
     /// Opens the basket container.
