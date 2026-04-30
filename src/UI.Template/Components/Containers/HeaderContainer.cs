@@ -150,7 +150,7 @@ public class HeaderContainer : BaseComponent
         WebDriver.WaitForUrlChanged(() => Title.Click());
         return new AdminPage();
     }
-    
+
     /// <summary>
     /// Open the checkout page
     /// </summary>
