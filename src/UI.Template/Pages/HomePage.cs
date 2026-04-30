@@ -55,6 +55,25 @@ public class HomePage() : BaseEshopPage("/")
     }
 
     /// <summary>
+    /// Add product from the homepage by Add button to the basket.
+    /// </summary>
+    /// <param name="category">The name of the category.</param>
+    /// <param name="product">The name of the product.</param>
+    /// <returns></returns>
+    public void AddSpecificProductFromCategory(string category, string product)
+    {
+        _categories.SelectCategory(category);
+        Dictionary<string, ProductCard> productCards = _productsGrid.GetProductCards();
+
+        if (!productCards.TryGetValue(product, out ProductCard? value))
+        {
+            throw new NoSuchElementException("Product \"" + product + "\" not found in category \"" + category + "\".");
+        }
+
+        value.AddToBasket();
+    }
+
+    /// <summary>
     /// Tries to find a product card by its name on the current category.
     /// </summary>
     /// <param name="productName"></param>
