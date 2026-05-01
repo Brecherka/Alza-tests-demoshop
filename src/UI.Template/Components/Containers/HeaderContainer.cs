@@ -18,6 +18,7 @@ public class HeaderContainer : BaseComponent
     private readonly Button ClearBasketButton = new(By.XPath("//button[@class='clear-cart']"));
     private readonly Button CloseBasketButton = new(By.XPath("//button[@class='close-cart']"));
     private readonly Simple Title = new(By.XPath("//h1[@class='shop-title']"));
+    private readonly Button CheckoutButton = new(By.XPath("//button[@class='checkout-button']"));
 
     /// <summary>
     /// Opens the basket container.
@@ -87,6 +88,32 @@ public class HeaderContainer : BaseComponent
     }
 
     /// <summary>
+    /// Gets a list of product prices and counts.
+    /// </summary>
+    /// <returns>A list of product prices and counts.</returns>
+    public List<string> GetProductPriceAndCountInBasket()
+    {
+        if (BasketContainer.IsNotDisplayed())
+        {
+            throw new InvalidOperationException("Basket container is not open. Please open the basket before retrieving product names.");
+        }
+
+        List<string> priceAndCount = [];
+        By productPathLocator = By.XPath("//*[@class='cart-item-details']");
+
+        int productCardsCount = WebDriver.FindElements(productPathLocator).Count;
+        for (int i = 1; i <= productCardsCount; i++)
+        {
+            Simple productCard = new(By.XPath($"({productPathLocator.ToSelector()}/p)[{i}]"));
+            productCard.ScrollTo();
+            priceAndCount.Add(productCard.GetText());
+        }
+
+        return priceAndCount;
+    }
+
+
+    /// <summary>
     /// Gets the nth product in the basket.
     /// </summary>
     /// <param name="n">The index of the product to get (1-based).</param>
@@ -122,5 +149,15 @@ public class HeaderContainer : BaseComponent
     {
         WebDriver.WaitForUrlChanged(() => Title.Click());
         return new AdminPage();
+    }
+
+    /// <summary>
+    /// Open the checkout page
+    /// </summary>
+    /// <returns>The Checkout page</returns>
+    public CheckoutPage OpenCheckoutPage()
+    {
+        CheckoutButton.Click();
+        return new CheckoutPage();
     }
 }

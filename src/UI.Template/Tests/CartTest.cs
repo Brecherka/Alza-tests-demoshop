@@ -54,4 +54,49 @@ public class CartTest : BaseTest
         productDetail.ProductInfoForm.BackToShop();
         Assert.That(homePage.GetCurrentCategory(), Is.EqualTo("All"), "The current category is not 'All'");
     }
+
+    [Test]
+    public void BuyProductTest()
+    {
+        // TC description:
+        // 1. Go to the demoshop homepage.
+        // 2. Go to the "Monitors" section.
+        // 3. Add "4K LED Monitor" product to the cart
+        // 4. Check product price and count in basket
+        // 5. Go to the Checkout
+        // 6. Fill all required fields
+        // 7. Change payment method to PayPal
+        // 8. Click on Pay button and confirm the order
+        // 9. Check created order (price and payment method)
+
+        TestProduct _testProduct = TestData.ProductToBuy;
+        UserData _customerData = TestData.CustomerData;
+
+        //*** STEP 1 ***/
+        HomePage homePage = new();
+        homePage.Open();
+
+        //*** STEPS 2-3 ***/
+        homePage.AddSpecificProductFromCategory(_testProduct.ProductCategory, _testProduct.ProductName);
+        Assert.That(homePage.Header.GetBasketCount(), Is.EqualTo(1), "Basket count is not 1. Check Add to Cart functionality.");
+
+        //*** STEP 4 ***/
+        homePage.Header.OpenBasketContainer();
+        List<string> productNames = homePage.Header.GetProductNamesInBasket();
+        Assert.That(productNames[0], Is.EqualTo(_testProduct.ProductName), "Basket detail doesn't contain added product name");
+        List<string> productPriceAndCount = homePage.Header.GetProductPriceAndCountInBasket();
+        Assert.That(productPriceAndCount[0], Is.EqualTo("$ 300.00 × 1"), "Basket detail doesn't contain correct price and count of product");
+
+        //*** STEP 5 ***/
+        CheckoutPage checkoutPage = homePage.Header.OpenCheckoutPage();
+
+        //*** STEPS 6-7 ***/
+        checkoutPage.FillRequieredFileds(_customerData.FirstName, _customerData.LastName, _customerData.Street,
+         _customerData.City, _customerData.ZIPCode, _customerData.Email, _customerData.PhoneNumber, _customerData.PaymentMethod);
+
+        //*** STEPS 8-9 ***/
+        ConfirmationPage confirmationPage = CheckoutPage.WaitForConfirmationPage();
+        Assert.That(confirmationPage.GetPaymentMethod(), Is.EqualTo("Payment Method: PayPal"), "The selected payment method is not equal to summary payment method");
+        Assert.That(confirmationPage.GetSummaryPrice(), Is.EqualTo("$ 300.00"), "The price in order confirmation is not correct");
+    }
 }
