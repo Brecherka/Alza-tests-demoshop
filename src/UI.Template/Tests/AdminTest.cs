@@ -49,9 +49,9 @@ public class AdminTest : BaseTest
 
         Assert.Multiple(() =>
         {
-            Assert.That(productModelFromDetail.Name, Is.EqualTo(_newProduct.ProductName), "Failed to find product name");
-            Assert.That(productModelFromDetail.Price, Is.EqualTo(_newProduct.ProductPrice), "Failed to find product price");
-            Assert.That(productModelFromDetail.Stock, Is.EqualTo(_newProduct.ProductStock), "Failed to find product availability");
+            Assert.That(productModelFromDetail.Name, Is.EqualTo(_newProduct.ProductName), "The product name is not equal to added product");
+            Assert.That(productModelFromDetail.Price, Is.EqualTo(_newProduct.ProductPrice), "The product price is different from the added product");
+            Assert.That(productModelFromDetail.Stock, Is.EqualTo(_newProduct.ProductStock), "The stock aviability is different from the added product");
         });
 
     }
