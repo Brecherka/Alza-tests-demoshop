@@ -39,4 +39,14 @@ public static class TestData
         PhoneNumber = "123456789",
         PaymentMethod = "PayPal"
     };
+
+    public static TestProduct NewProduct { get; } = new TestProduct
+    {
+        ProductCategory = "Cameras",
+        ProductName = "Camera M25",
+        ProductPrice = 50.5,
+        ProductStock = 5,
+        ProductImage = "Camera 2",
+        ProductDescription = "Camera"
+    };
 }
