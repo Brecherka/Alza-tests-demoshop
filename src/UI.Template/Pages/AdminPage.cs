@@ -50,4 +50,25 @@ public class AdminPage() : BasePage("/admin")
         WebDriver.WaitForUrlChanged(() => _backToEshopButton.Click());
         return new HomePage();
     }
+
+    /// <summary>
+    /// Create new product in admin page
+    /// </summary>
+    /// <param name="name">New name for the product.</param>
+    /// <param name="category">Category to by choose from dropdown.</param>
+    /// <param name="price">Price of the new product.</param>
+    /// <param name="stock">New stock aviability.</param>
+    /// <param name="image">Name of the image to be select.</param>
+    /// <param name="description">Description of the new product.</param>
+    public void FillProductDetailAndSave(string name, string category, double price, int stock, string image, string description)
+    {
+        EditProductContainer addContainer = OpenAddNewProductContainer();
+        addContainer.SetName(name);
+        addContainer.SelectCategory(category);
+        addContainer.SetPrice(price);
+        addContainer.SetStock(stock);
+        addContainer.SelectImage(image);
+        addContainer.SetDescription(description);
+        addContainer.SaveChanges();
+    }
 }
